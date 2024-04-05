@@ -1,11 +1,71 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+
 import "./App.css";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
   const [loginStatus, setLoginStatus] = useState(false);
+
+  const inputEmail = useRef();
+  const inputPassword = useRef();
+  const inputConfirmPassword = useRef();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    const email = inputEmail.current.value;
+    const password = inputPassword.current.value;
+
+    if (!loginStatus) {
+      const confirmPassword = inputConfirmPassword.current.value;
+      if (password !== confirmPassword) {
+        alert("Password & Confirm Password are not same");
+        return;
+      }
+      // console.log("Login Successful");
+    }
+
+    let url;
+    if (loginStatus) {
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBd1PSbZ7xKiBdTzzu5bffqiG_sYszor7w";
+    } else {
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBd1PSbZ7xKiBdTzzu5bffqiG_sYszor7w";
+    }
+
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        returnSecureToken: true,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        // const data = res.json();
+        // console.log("Hi", data);
+        if (res.ok) {
+          navigate("/welcome");
+          return res.json();
+        } else {
+          throw new Error("Some Error in api");
+        }
+      })
+      .then((data) => {
+        console.log("SUCCESSSS", data);
+        // ctx.login(data.idToken);
+        // console.log("token", ctx.token);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
   return (
     <>
@@ -24,18 +84,26 @@ function App() {
           <input
             type="email"
             placeholder="email"
-            className="border border-slate-400 rounded p-2 required "
+            className="border border-slate-400 rounded p-2"
+            required
+            ref={inputEmail}
           />
           <input
             type="password"
             placeholder="password"
-            className="border border-slate-400 rounded p-2 required "
+            className="border border-slate-400 rounded p-2"
+            required
+            minLength={6}
+            ref={inputPassword}
           />
           {loginStatus ? null : (
             <input
               type="password"
               placeholder="Confirm Password"
-              className="border border-slate-400 rounded p-2 required "
+              className="border border-slate-400 rounded p-2"
+              required
+              minLength={6}
+              ref={inputConfirmPassword}
             />
           )}
 
