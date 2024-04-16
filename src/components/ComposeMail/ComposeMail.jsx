@@ -14,9 +14,11 @@ const ComposeMail = () => {
     const email = inputEmail.current.value;
     const subject = inputSubject.current.value;
 
+    let formatEmail = email.replace("@", "");
+    formatEmail = formatEmail.replace(".", "");
     console.log("E-mail", email);
 
-    let url = `https://mail-box-client-4c3e9-default-rtdb.firebaseio.com/email.json`;
+    let url = `https://mail-box-client-4c3e9-default-rtdb.firebaseio.com/${formatEmail}.json`;
     fetch(url, {
       method: "POST",
       body: JSON.stringify({

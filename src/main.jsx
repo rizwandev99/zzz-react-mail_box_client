@@ -9,14 +9,13 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Welcome from "./components/Welcome";
-import ComposeMail from "./components/compose_mail/ComposeMail.jsx";
+//import ComposeMail from "./components/ComposeMail/ComposeMail.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<ComposeMail />} />
-      {/* <Route path="/" element={<App />} />
-      <Route path="welcome" element={<Welcome />} /> */}
+    <Route path="/" element={<App />} />
+    <Route path="/welcome" element={<Welcome />} />
     </>
   )
 );

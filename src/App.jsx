@@ -1,22 +1,25 @@
 import { useRef, useState } from "react";
 
 import "./App.css";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function App() {
   const navigate = useNavigate();
-
   const [loginStatus, setLoginStatus] = useState(false);
 
   const inputEmail = useRef();
   const inputPassword = useRef();
   const inputConfirmPassword = useRef();
 
+  console.log(inputEmail)
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
     const email = inputEmail.current.value;
     const password = inputPassword.current.value;
+    
+    console.log(email)
 
     if (!loginStatus) {
       const confirmPassword = inputConfirmPassword.current.value;
@@ -67,6 +70,9 @@ function App() {
         alert(err);
       });
   };
+
+  
+
   return (
     <>
       {/* Main Screen */}
@@ -111,32 +117,17 @@ function App() {
             Submit
           </button>
         </form>
+        {/* Login Button */}
         <div className="p-4 rounded-md mt-4 bg-green-300 min-w-80 text-center">
-          {loginStatus ? (
-            <>
-              <span>Don't have an Account ? </span>
-              <button
-                className="text-blue-570 font-bold"
-                onClick={() => {
-                  setLoginStatus((prevState) => !prevState);
-                }}
-              >
-                SignUp
-              </button>
-            </>
-          ) : (
-            <>
-              <span>Have an Account ? </span>
-              <button
-                className="text-blue-570 font-bold"
-                onClick={() => {
-                  setLoginStatus((prevState) => !prevState);
-                }}
-              >
-                Login
-              </button>
-            </>
-          )}
+        <span>
+            {loginStatus ? "Don't have an Account ? " : "Have an Account ? "}
+          </span>
+          <button
+            className="text-blue-570 font-bold"
+            onClick={() => setLoginStatus((prevState) => !prevState)}
+          >
+            {loginStatus ? "SignUp" : "Login"}
+          </button> 
         </div>
       </div>
     </>
